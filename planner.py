@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import font
+from tkinter.filedialog import *
 
 gui = Tk()
 gui.geometry("1100x410")
@@ -19,7 +20,24 @@ def delete_item():
     if index:
         list1.delete(index)
 
-save = Button(gui,highlightbackground="gray92",fg="gray0",text = "SAVE",width=15)
+def open_file():
+    file = askopenfile()
+    if file != None:
+        list1.delete(0,END)
+        items = file.readlines()
+        for item in items:
+            list1.insert(END,item)
+
+def save_file():
+    file = asksaveasfile()
+    if file != None:
+        for item in list1.get(0,END):
+            print(item.strip(),file=file)
+        list1.delete(0,END)
+
+
+
+save = Button(gui,highlightbackground="gray92",fg="gray0",text = "SAVE",width=15,command=save_file)
 save.place(x=455 ,y=7)
 
 topentry = Entry(gui,fg= "gray0",width=45)
@@ -28,7 +46,7 @@ topentry.place(x=325 ,y=40)
 add = Button(gui,highlightbackground="gray92",fg="gray0",text = "ADD",width=15,command=add_item)
 add.place(x=455 ,y=70)
 
-open1 = Button(gui,highlightbackground="gray92",fg="gray0",text = "OPEN",width=15)
+open1 = Button(gui,highlightbackground="gray92",fg="gray0",text = "OPEN",width=15,command=open_file)
 open1.pack(side=LEFT)
 
 delete1 = Button(gui,highlightbackground="gray92",fg="gray0",text = "DELETE",width=15,command=delete_item)
